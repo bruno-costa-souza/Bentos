@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bento's Barbearia · Agende seu horário</title>
+  <meta name="description" content="Agende seu horário na Bento's Barbearia pelo WhatsApp, veja como chegar e conheça a história de quem está por trás da cadeira.">
+  <meta name="theme-color" content="#14110E">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Bento's Barbearia">
+  <meta property="og:title" content="Bento's Barbearia">
+  <meta property="og:description" content="Agende seu horário e conheça a história de quem está por trás da cadeira.">
+  <meta property="og:url" content="[URL_DO_SITE]/">
+  <meta property="og:image" content="[URL_DO_SITE]/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Bento's Barbearia, agende seu horário">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,500&family=DM+Sans:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,500&family=DM+Sans:wght@400;600;700&display=swap"></noscript>
+
+  <style>
+    :root {
+      --fundo: #14110E;
+      --cartao: #1F1A15;
+      --cartao-forte: #29221B;
+      --borda: #3A3128;
+      --dourado: #C9A24B;
+      --dourado-claro: #E2C27A;
+      --creme: #F3EBDD;
+      --texto-suave: #B5AA98;
+      --verde: #7FD39A;
+      --vermelho: #F29A8E;
+      --sombra: 0 8px 22px rgba(0, 0, 0, .35);
+      --raio: 16px;
+      --serif: "Playfair Display", Georgia, "Times New Roman", serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(120% 60% at 50% -10%, rgba(201, 162, 75, .16), transparent 60%),
+        var(--fundo);
+      color: var(--creme);
+      font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .pagina {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 48px 20px calc(28px + env(safe-area-inset-bottom));
+    }
+
+    .topo { text-align: center; }
+    .logo {
+      width: 128px; height: 128px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: var(--cartao);
+      border: 3px solid var(--fundo);
+      box-shadow: 0 0 0 2px var(--dourado), 0 12px 30px rgba(0, 0, 0, .45);
+      overflow: hidden;
+    }
+    .logo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .logo-placeholder {
+      display: none; width: 100%; height: 100%;
+      align-items: center; justify-content: center;
+      background: radial-gradient(circle at 35% 30%, var(--cartao-forte), var(--fundo) 75%);
+      color: var(--dourado);
+      font-family: var(--serif); font-weight: 700; font-size: 64px; line-height: 1;
+    }
+    .logo.sem-imagem img { display: none; }
+    .logo.sem-imagem .logo-placeholder { display: flex; }
+
+    h1, h2 { font-family: var(--serif); font-weight: 700; letter-spacing: -.01em; text-wrap: balance; }
+    h1 { margin: 0; font-size: 2rem; line-height: 1.15; }
+    .slogan { margin: 6px 0 0; color: var(--texto-suave); font-size: 1rem; text-wrap: balance; }
+
+    .status {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin: 18px 0 0;
+      padding: 7px 14px;
+      min-height: 36px;
+      border-radius: 999px;
+      background: var(--cartao);
+      border: 1px solid var(--borda);
+      font-size: .9rem; font-weight: 600;
+    }
+    .status::before {
+      content: ""; width: 8px; height: 8px; border-radius: 50%;
+      background: currentColor;
+    }
+    .status[data-estado="aberto"] { color: var(--verde); }
+    .status[data-estado="fechado"] { color: var(--vermelho); }
+
+    .links { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 12px; }
+
+    .botao {
+      display: flex; align-items: center; gap: 14px;
+      width: 100%; min-height: 64px;
+      padding: 10px 14px 10px 10px;
+      border: 1px solid var(--borda);
+      border-radius: var(--raio);
+      background: var(--cartao);
+      color: var(--creme);
+      font: inherit; text-align: left; text-decoration: none;
+      box-shadow: var(--sombra);
+      cursor: pointer;
+      transition: transform .12s ease, background-color .2s ease, border-color .2s ease;
+    }
+    .botao:hover { background: var(--cartao-forte); border-color: #4D4134; }
+    .botao:active { transform: scale(.97); }
+    .botao:focus-visible,
+    .rodape a:focus-visible {
+      outline: 3px solid var(--dourado-claro);
+      outline-offset: 3px;
+    }
+
+    .icone {
+      flex: none; display: grid; place-items: center;
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--fundo);
+      font-size: 1.35rem; line-height: 1;
+    }
+    .texto { flex: 1; min-width: 0; }
+    .titulo { display: block; font-weight: 600; font-size: 1.02rem; line-height: 1.25; text-wrap: balance; }
+    .sub { display: block; color: var(--texto-suave); font-size: .84rem; line-height: 1.35; margin-top: 2px; }
+    .seta { flex: none; width: 22px; height: 22px; color: var(--dourado); transition: transform .25s ease; }
+
+    .botao.principal {
+      min-height: 76px;
+      background: var(--dourado);
+      border-color: var(--dourado-claro);
+      color: var(--fundo);
+      box-shadow: 0 12px 28px rgba(201, 162, 75, .28);
+    }
+    .botao.principal:hover { background: var(--dourado-claro); }
+    .botao.principal .icone { background: rgba(20, 17, 14, .14); width: 52px; height: 52px; font-size: 1.55rem; }
+    .botao.principal .titulo { font-size: 1.14rem; font-weight: 700; }
+    .botao.principal .sub { color: #3B2D12; }
+    .botao.principal .seta { color: var(--fundo); }
+    .botao.principal:focus-visible { outline-color: var(--creme); }
+
+    .acordeao .botao[aria-expanded="true"] { border-radius: var(--raio) var(--raio) 0 0; }
+    .acordeao .botao[aria-expanded="true"] .seta { transform: rotate(90deg); }
+    .painel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+    .painel > div { overflow: hidden; }
+    .acordeao.aberto .painel { grid-template-rows: 1fr; }
+    .horarios {
+      margin: 0; padding: 6px 16px 12px;
+      background: var(--cartao);
+      border: 1px solid var(--borda); border-top: 0;
+      border-radius: 0 0 var(--raio) var(--raio);
+    }
+    .horarios div {
+      display: flex; justify-content: space-between; gap: 12px;
+      padding: 9px 4px;
+      border-top: 1px dashed var(--borda);
+      font-size: .95rem;
+    }
+    .horarios div:first-child { border-top: 0; }
+    .horarios dt, .horarios dd { margin: 0; }
+    .horarios .fechado dd { color: var(--texto-suave); }
+    .horarios .hoje {
+      margin: 0 -8px; padding: 9px 12px;
+      border-radius: 10px; border-top-color: transparent;
+      background: rgba(201, 162, 75, .16);
+      color: var(--dourado-claro);
+      font-weight: 700;
+    }
+    .horarios .hoje + div { border-top-color: transparent; }
+    .horarios .tag-hoje { font-weight: 400; font-size: .8rem; }
+
+    .secao { margin-top: 48px; }
+    .rotulo {
+      display: block; margin: 0 0 6px;
+      color: var(--dourado); font-size: .78rem; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+    }
+    h2 { margin: 0 0 20px; font-size: 1.65rem; line-height: 1.2; }
+
+    .foto {
+      position: relative;
+      margin: 0 0 24px;
+      aspect-ratio: 4 / 5;
+      border-radius: var(--raio);
+      overflow: hidden;
+      background:
+        repeating-linear-gradient(135deg, transparent 0 14px, rgba(201, 162, 75, .05) 14px 28px),
+        var(--cartao);
+      border: 1px solid var(--borda);
+    }
+    .foto img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0; transition: opacity .4s ease;
+    }
+    .foto.carregada img { opacity: 1; }
+    .foto-placeholder {
+      position: absolute; inset: 0;
+      display: grid; place-content: center; gap: 8px; text-align: center;
+      color: var(--texto-suave); font-size: .9rem;
+    }
+    .foto-placeholder span { font-size: 2.4rem; color: var(--dourado); }
+    .foto.carregada .foto-placeholder { display: none; }
+
+    .historia p { margin: 0 0 16px; font-size: 1.04rem; }
+
+    .linha-tempo { list-style: none; margin: 28px 0; padding: 0; }
+    .linha-tempo li {
+      position: relative;
+      padding: 0 0 20px 30px;
+      border-left: 2px solid var(--borda);
+      margin-left: 7px;
+    }
+    .linha-tempo li:last-child { padding-bottom: 0; border-left-color: transparent; }
+    .linha-tempo li::before {
+      content: "";
+      position: absolute; left: -9px; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--fundo); border: 2px solid var(--dourado);
+    }
+    .linha-tempo li:last-child::before { background: var(--dourado); }
+    .ano { display: block; color: var(--dourado); font-weight: 700; font-size: .95rem; letter-spacing: .04em; }
+    .marco { display: block; font-weight: 600; }
+    .linha-tempo .frase { display: block; color: var(--texto-suave); font-size: .95rem; }
+
+    .citacao {
+      margin: 32px 0 28px;
+      padding: 22px 22px 20px;
+      border-left: 3px solid var(--dourado);
+      border-radius: 0 var(--raio) var(--raio) 0;
+      background: var(--cartao);
+    }
+    .citacao p {
+      margin: 0;
+      font-family: var(--serif); font-style: italic; font-weight: 500;
+      font-size: 1.35rem; line-height: 1.35;
+      text-wrap: balance;
+    }
+    .citacao footer { margin-top: 10px; color: var(--dourado); font-weight: 600; font-size: .9rem; }
+
+    .servicos { list-style: none; margin: 0; padding: 0; }
+    .servicos li {
+      display: flex; align-items: baseline; gap: 10px;
+      padding: 12px 2px;
+      border-bottom: 1px dashed var(--borda);
+    }
+    .servicos li:first-child { border-top: 1px dashed var(--borda); }
+    .servicos .nome { font-weight: 600; }
+    .servicos .pontos { flex: 1; border-bottom: 1px dotted #5A4D3E; transform: translateY(-4px); min-width: 16px; }
+    .servicos .preco { color: var(--dourado-claro); font-weight: 700; white-space: nowrap; }
+
+    .rodape {
+      margin-top: 48px; padding-top: 28px;
+      border-top: 1px solid var(--borda);
+      text-align: center; color: var(--texto-suave); font-size: .88rem;
+    }
+    .rodape address { font-style: normal; }
+    .rodape .insta {
+      display: inline-grid; place-items: center;
+      width: 48px; height: 48px; margin: 14px 0 8px;
+      border-radius: 50%;
+      border: 1px solid var(--dourado);
+      color: var(--dourado);
+    }
+    .rodape .insta:hover { background: var(--cartao); }
+    .rodape .insta svg { width: 24px; height: 24px; }
+    .rodape p { margin: 0; }
+
+    @keyframes entrar {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    .anima { animation: entrar .5s cubic-bezier(.2, .7, .3, 1) both; animation-delay: calc(var(--i, 0) * 60ms); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .botao:active { transform: none; }
+    }
+
+    @media (min-width: 600px) {
+      .pagina { padding-top: 72px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="pagina">
+    <header class="topo">
+      <div class="logo" id="logo">
+        <picture>
+          <source srcset="assets/logo.webp" type="image/webp">
+          <img src="assets/logo.png" width="128" height="128" alt="Logo da Bento's Barbearia" fetchpriority="high">
+        </picture>
+        <span class="logo-placeholder" aria-hidden="true">B</span>
+      </div>
+      <h1>Bento's Barbearia</h1>
+      <p class="slogan" id="slogan">[SLOGAN]</p>
+      <p class="status" id="status" role="status">Confira o horário abaixo</p>
+    </header>
+
+    <ul class="links">
+      <li class="anima" style="--i:0">
+        <a class="botao principal" id="link-agendar" href="#" target="_blank" rel="noopener">
+          <span class="icone" aria-hidden="true">✂️</span>
+          <span class="texto">
+            <span class="titulo">Agendar horário</span>
+            <span class="sub" id="sub-agendar">Escolha o melhor dia para você</span>
+          </span>
+          <svg class="seta" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+      <li class="anima" style="--i:1">
+        <a class="botao" id="link-whatsapp" href="#" target="_blank" rel="noopener">
+          <span class="icone" aria-hidden="true">💬</span>
+          <span class="texto">
+            <span class="titulo">Falar no WhatsApp</span>
+            <span class="sub">Tire suas dúvidas</span>
+          </span>
+          <svg class="seta" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+      <li class="anima" style="--i:2">
+        <a class="botao" id="link-mapa" href="#" target="_blank" rel="noopener">
+          <span class="icone" aria-hidden="true">📍</span>
+          <span class="texto">
+            <span class="titulo">Como chegar</span>
+            <span class="sub">Abrir no Google Maps</span>
+          </span>
+          <svg class="seta" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </a>
+      </li>
+      <li class="anima acordeao" style="--i:3" id="acordeao">
+        <button class="botao" type="button" id="botao-horarios" aria-expanded="false" aria-controls="painel-horarios">
+          <span class="icone" aria-hidden="true">⏰</span>
+          <span class="texto">
+            <span class="titulo">Horários</span>
+            <span class="sub" id="sub-horario">Toque para ver os dias</span>
+          </span>
+          <svg class="seta" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+        <div class="painel" id="painel-horarios" role="region" aria-labelledby="botao-horarios" hidden>
+          <div><dl class="horarios" id="lista-horarios"></dl></div>
+        </div>
+      </li>
+    </ul>
+
+    <section class="secao historia" aria-labelledby="titulo-historia">
+      <span class="rotulo">Quem está por trás da cadeira</span>
+      <h2 id="titulo-historia">Minha história</h2>
+
+      <figure class="foto" id="foto">
+        <img src="assets/bento.jpg" width="800" height="1000" loading="lazy" decoding="async" alt="Bento, dono da Bento's Barbearia">
+        <figcaption class="foto-placeholder"><span aria-hidden="true">✂</span>Foto do Bento em breve</figcaption>
+      </figure>
+
+      <p>[HISTÓRIA: como tudo começou. Onde você cortou o primeiro cabelo, quem te ensinou ou como aprendeu, e por que escolheu essa profissão. 2 ou 3 frases, em primeira pessoa.]</p>
+
+      <ol class="linha-tempo">
+        <li>
+          <span class="ano">[ANO]</span>
+          <span class="marco">O começo</span>
+          <span class="frase">[MARCO: o que aconteceu nesse ano, em uma frase]</span>
+        </li>
+        <li>
+          <span class="ano">[ANO]</span>
+          <span class="marco">A virada</span>
+          <span class="frase">[MARCO: o momento em que decidiu ter o próprio negócio, em uma frase]</span>
+        </li>
+        <li>
+          <span class="ano">[ANO]</span>
+          <span class="marco">A barbearia aberta</span>
+          <span class="frase">[MARCO: como foi abrir as portas, em uma frase]</span>
+        </li>
+        <li>
+          <span class="ano">Hoje</span>
+          <span class="marco">Bento's Barbearia</span>
+          <span class="frase">[MARCO: como está a barbearia hoje, em uma frase]</span>
+        </li>
+      </ol>
+
+      <p>[HISTÓRIA: as dificuldades do caminho e o que a barbearia significa para você. O que você quer que o cliente sinta quando senta na sua cadeira. 2 ou 3 frases, em primeira pessoa.]</p>
+
+      <blockquote class="citacao">
+        <p>“[FRASE DO BENTO]”</p>
+        <footer>Bento</footer>
+      </blockquote>
+
+      <a class="botao principal" id="link-agendar-2" href="#" target="_blank" rel="noopener">
+        <span class="icone" aria-hidden="true">✂️</span>
+        <span class="texto">
+          <span class="titulo">Agendar com o Bento</span>
+          <span class="sub">Sua vez na cadeira</span>
+        </span>
+        <svg class="seta" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+    </section>
+
+    <section class="secao" aria-labelledby="titulo-servicos" id="secao-servicos">
+      <span class="rotulo">Na cadeira</span>
+      <h2 id="titulo-servicos">Serviços</h2>
+      <ul class="servicos" id="lista-servicos"></ul>
+    </section>
+
+    <footer class="rodape">
+      <address id="endereco"></address>
+      <a class="insta" id="link-instagram" href="#" target="_blank" rel="noopener" aria-label="Instagram da Bento's Barbearia">
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <p>© <span id="ano">2026</span> Bento's Barbearia</p>
+    </footer>
+  </main>
+
+  <script>
+    const CONFIG = {
+      slogan: '[SLOGAN]',
+      whatsapp: '[DDD+NUMERO]',
+      mensagemWhatsapp: "Olá! Vim pelo Instagram da Bento's Barbearia.",
+      mensagemAgendamento: 'Olá, Bento! Quero agendar um horário.',
+      linkAgendamento: '',
+      linkMapa: '[LINK_GOOGLE_MAPS]',
+      linkInstagram: '[LINK_INSTAGRAM]',
+      endereco: '[ENDERECO]',
+      horarios: {
+        domingo: null,
+        segunda: null,
+        terca:   '09:00-20:00',
+        quarta:  '09:00-20:00',
+        quinta:  '09:00-20:00',
+        sexta:   '09:00-20:00',
+        sabado:  '08:00-18:00',
+      },
+      servicos: [
+        { nome: 'Corte',         preco: '[PREÇO]' },
+        { nome: 'Barba',         preco: '[PREÇO]' },
+        { nome: 'Corte + Barba', preco: '[PREÇO]' },
+        { nome: 'Sobrancelha',   preco: '[PREÇO]' },
+      ],
+      fusoHorario: 'America/Sao_Paulo',
+    };
+
+    (function () {
+      const NOME = "Bento's Barbearia";
+      const DIAS = ['domingo', 'segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado'];
+      const NOMES = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+      const SCHEMA_DIAS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const $ = (id) => document.getElementById(id);
+      const pendente = (v) => typeof v === 'string' && v.includes('[');
+      const valor = (v) => (pendente(v) ? '' : (v || '').trim());
+      const semAcento = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+      const img = document.querySelector('#logo img');
+      const semLogo = () => $('logo').classList.add('sem-imagem');
+      img.addEventListener('error', semLogo);
+      if (img.complete && img.naturalWidth === 0) semLogo();
+
+      const foto = document.querySelector('#foto img');
+      const fotoOk = () => { if (foto.naturalWidth) $('foto').classList.add('carregada'); };
+      foto.addEventListener('load', fotoOk);
+      if (foto.complete) fotoOk();
+
+      const slogan = valor(CONFIG.slogan);
+      $('slogan').textContent = slogan || CONFIG.slogan;
+
+      const numero = valor(CONFIG.whatsapp).replace(/\D/g, '');
+      const wa = (msg) => 'https://wa.me/' + (numero ? '55' + numero : '') + '?text=' + encodeURIComponent(msg);
+      const agendamento = valor(CONFIG.linkAgendamento) || wa(CONFIG.mensagemAgendamento || CONFIG.mensagemWhatsapp);
+      if (!valor(CONFIG.linkAgendamento)) $('sub-agendar').textContent = 'Pelo WhatsApp, rapidinho';
+
+      const links = {
+        'link-agendar': agendamento,
+        'link-agendar-2': agendamento,
+        'link-whatsapp': wa(CONFIG.mensagemWhatsapp),
+        'link-mapa': valor(CONFIG.linkMapa) || '#',
+        'link-instagram': valor(CONFIG.linkInstagram) || '#',
+      };
+      for (const id in links) {
+        const link = $(id);
+        link.href = links[id];
+        if (!/^https?:/i.test(links[id])) link.removeAttribute('target');
+      }
+
+      $('endereco').textContent = CONFIG.endereco;
+      $('ano').textContent = new Date().getFullYear();
+
+      const servicos = Array.isArray(CONFIG.servicos) ? CONFIG.servicos : [];
+      if (!servicos.length) $('secao-servicos').hidden = true;
+      $('lista-servicos').replaceChildren(...servicos.map((s) => {
+        const li = document.createElement('li');
+        const nome = document.createElement('span');
+        const pontos = document.createElement('span');
+        const preco = document.createElement('span');
+        nome.className = 'nome'; nome.textContent = s.nome;
+        pontos.className = 'pontos'; pontos.setAttribute('aria-hidden', 'true');
+        preco.className = 'preco'; preco.textContent = s.preco;
+        li.append(nome, pontos, preco);
+        return li;
+      }));
+
+      const faltando = Object.entries(CONFIG).filter(([, v]) => pendente(v)).map(([k]) => k);
+      if (!numero) faltando.push('whatsapp');
+      if (servicos.some((s) => pendente(s.nome) || pendente(s.preco))) faltando.push('servicos (preços)');
+      if (!CONFIG.horarios) faltando.push('horarios');
+      const historia = document.querySelector('.historia').textContent;
+      if (/\[(HISTÓRIA|ANO|MARCO|FRASE)/.test(historia)) faltando.push('texto da "Minha história" (no HTML)');
+      if (document.querySelector('meta[property="og:url"]').content.includes('[')) faltando.push('[URL_DO_SITE] nas tags og: do <head>');
+      if (faltando.length) console.warn(NOME + ': falta preencher →\n • ' + [...new Set(faltando)].join('\n • '));
+
+      const paraMin = (hhmm) => { const [h, m] = hhmm.split(':').map(Number); return h * 60 + (m || 0); };
+      const faixa = (dia) => {
+        const v = CONFIG.horarios && CONFIG.horarios[DIAS[dia]];
+        if (!v) return null;
+        const [a, f] = v.split('-').map((s) => s.trim());
+        return { abre: paraMin(a), fecha: paraMin(f), texto: [a, f] };
+      };
+      const hora = (min) => Math.floor(min / 60) + 'h' + (min % 60 ? String(min % 60).padStart(2, '0') : '');
+
+      function agora() {
+        const sim = new URLSearchParams(location.search).get('simular');
+        if (sim) {
+          const [d, t] = sim.split('-');
+          return { dia: Math.max(0, DIAS.indexOf(semAcento(d))), min: paraMin(t || '12:00') };
+        }
+        const partes = new Intl.DateTimeFormat('en-US', {
+          timeZone: CONFIG.fusoHorario, weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+        }).formatToParts(new Date());
+        const p = Object.fromEntries(partes.map((x) => [x.type, x.value]));
+        return { dia: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday), min: (+p.hour % 24) * 60 + +p.minute };
+      }
+
+      function proximaAbertura(dia, min) {
+        const hoje = faixa(dia);
+        if (hoje && min < hoje.abre) return 'abre hoje às ' + hora(hoje.abre);
+        for (let i = 1; i <= 7; i++) {
+          const f = faixa((dia + i) % 7);
+          if (!f) continue;
+          const quando = i === 1 ? 'amanhã' : NOMES[(dia + i) % 7].toLowerCase();
+          return 'abre ' + quando + ' às ' + hora(f.abre);
+        }
+        return 'confira o horário';
+      }
+
+      function atualizarStatus() {
+        const { dia, min } = agora();
+        const f = faixa(dia);
+        const aberto = f && min >= f.abre && min < f.fecha;
+        const el = $('status');
+        el.dataset.estado = aberto ? 'aberto' : 'fechado';
+        el.textContent = aberto
+          ? 'Aberto agora · fecha às ' + hora(f.fecha)
+          : 'Fechado · ' + proximaAbertura(dia, min);
+        $('sub-horario').textContent = f ? 'Hoje: ' + hora(f.abre) + ' às ' + hora(f.fecha) : 'Hoje: fechado';
+        return dia;
+      }
+
+      function montarLista(hojeIdx) {
+        const SEGUNDA_A_DOMINGO = [1, 2, 3, 4, 5, 6, 0];
+        $('lista-horarios').innerHTML = SEGUNDA_A_DOMINGO.map((d) => {
+          const f = faixa(d);
+          const cls = [d === hojeIdx ? 'hoje' : '', f ? '' : 'fechado'].join(' ').trim();
+          const hoje = d === hojeIdx ? ' <span class="tag-hoje">(hoje)</span>' : '';
+          return '<div class="' + cls + '"><dt>' + NOMES[d] + hoje + '</dt><dd>' +
+            (f ? hora(f.abre) + ' às ' + hora(f.fecha) : 'Fechado') + '</dd></div>';
+        }).join('');
+      }
+
+      montarLista(atualizarStatus());
+      setInterval(atualizarStatus, 60 * 1000);
+
+      const botao = $('botao-horarios');
+      const painel = $('painel-horarios');
+      const item = $('acordeao');
+      botao.addEventListener('click', () => {
+        const abrir = botao.getAttribute('aria-expanded') !== 'true';
+        botao.setAttribute('aria-expanded', String(abrir));
+        if (abrir) {
+          painel.hidden = false;
+          requestAnimationFrame(() => requestAnimationFrame(() => item.classList.add('aberto')));
+        } else {
+          item.classList.remove('aberto');
+          const reduz = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          setTimeout(() => { if (botao.getAttribute('aria-expanded') === 'false') painel.hidden = true; }, reduz ? 0 : 300);
+        }
+      });
+
+      const url = location.origin + location.pathname;
+      const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'BarberShop',
+        name: NOME,
+        url,
+        image: new URL('assets/og-image.jpg', url).href,
+        openingHoursSpecification: DIAS.map((_, d) => faixa(d)).map((f, d) => f && {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: 'https://schema.org/' + SCHEMA_DIAS[d],
+          opens: f.texto[0],
+          closes: f.texto[1],
+        }).filter(Boolean),
+      };
+      if (slogan) schema.slogan = slogan;
+      if (numero) schema.telephone = '+55' + numero;
+      if (valor(CONFIG.endereco)) schema.address = { '@type': 'PostalAddress', streetAddress: valor(CONFIG.endereco), addressCountry: 'BR' };
+      if (valor(CONFIG.linkMapa)) schema.hasMap = valor(CONFIG.linkMapa);
+      if (valor(CONFIG.linkInstagram)) schema.sameAs = [valor(CONFIG.linkInstagram)];
+      const ld = document.createElement('script');
+      ld.type = 'application/ld+json';
+      ld.textContent = JSON.stringify(schema);
+      document.head.appendChild(ld);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+.DS_Store
+
+.obsidian/
+Templates/
+*.md
+!README.md
+!**/README.md
